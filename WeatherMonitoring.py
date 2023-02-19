@@ -1,4 +1,4 @@
-import selenium 
+import selenium
 #load selenium module into python program
 from selenium import webdriver
 #absolute import of the "webdriver" sub-package from the selenium package 
@@ -6,7 +6,7 @@ from selenium.webdriver.common.by import By
 #relative import of the "By" sub-package from the selenium.webdriver.common.by package
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 #changing the variable name of "Options" to "FirefoxOptions" where "Options" sub-package is 
-# obtained from relative import of "selenium.webdriver.firefox.options"
+#obtained from relative import of "selenium.webdriver.firefox.options"
 import time
 #import time module into python program, available from python libraries
 #used to represent time in code, eg to make system sleep
@@ -17,10 +17,16 @@ import winsound
 #import winsound module, avalable from python libraries
 #allow the code to play basic sounds
 
+# import serial
+#imports the PySerial package
+#facilitates the communciation between the python program and the arduino
+# ser = serial.Serial('COM3', 9600)
+#initialising the serial communication port, and setting the communication baud rate
+
 def init_webdriver(headless=True):
 #defining the function init_webdriver()
 #purpose is to initialise webdriver by calling webdriver.Firefox()
-#to also enable browser to open and run in background
+#to also enable ,browser to open and run in background
     if headless == True:    
         options = FirefoxOptions()
         options.add_argument("--headless") 
@@ -265,7 +271,6 @@ while (True):
     #x starts at 0 and increment by 1. maximum is based on the number of items in split data
         print(x)    
         #print out each item in the list in splitData
-        
     weatherConditionBSH = splitData[4].split(": ")[1]
     #obtain only the weather data for Bishan
     rainBSH = determineRain(weatherConditionBSH)
@@ -275,8 +280,15 @@ while (True):
         # Set Frequency buzz sound to 2500 hz
         buzzDuration = 200
         # Set Duration of buzz to 0.2 seconds
+        print(" Shelter System Activated")
+        # ser.write(b'H')
+        # Tells arduino to activate shelter system
     else:
         print(" Rain Status: Not Raining")
+        print(" Shelter System Deactivated")
+        # ser.write(b'L')
+        # Tells arduino to deactivate the shelter system
+        
     print("-------------------------------")
 
     #determine is locations are raining
@@ -293,6 +305,7 @@ while (True):
     NWind, EWind, SWind, WWind = getData(changeWeb = 1)
     #retrieve wind direction data of surrounding locations,
     #determine if the directions are pointed towards the main location
+
     incomingRain(rainAMK,rainSRG,wDataTPY,wDataNVA,wDataCWC,wDataBKT,wDataBKP,NWind,EWind,SWind,WWind)
     #determine if rain is directed towards main location
 
@@ -300,5 +313,3 @@ while (True):
     #two second delay
     os.system('cls')
     #refresh terminal
-
-
