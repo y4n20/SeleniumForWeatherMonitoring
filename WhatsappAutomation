@@ -1,0 +1,207 @@
+import selenium
+from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support.ui import Select
+from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support import expected_conditions as ec
+import openpyxl
+import time
+
+#structure is:
+#program will first prompt the user to a spreadsheet of target contacts
+#program will prompt the usr of the images and text that they want to send
+#program will generate an array of contacts based on the spreadsheet
+#program will access whatsapp and retrieve one contact name from the array
+#program will search the name in the search box and open a chat with the contact
+#program will attach the image and texts and click enter to send the message
+#program will take in the next contact
+
+def obtainContacts(row):
+    activeBook = openpyxl.load_workbook("C:\\Users\\ASUS\\Dropbox\\My PC (LAPTOP-NBF5IENT)\\Downloads\\Contacts Testing.xlsx")
+    #directory path of excel sheet
+    activeSheet = activeBook.active
+    #identify active worksheet
+    maxRowCount = activeSheet.max_row + 1
+    activeCell = activeSheet.cell(row, column = 1)
+    cellValue = activeCell.value
+    #retrieve contact name from cell
+    
+    return cellValue, maxRowCount
+
+#function that scans a spreadsheet of contacts and imports the array of contacts
+#will return one contact name at a time to main()
+
+
+def attachImage():
+
+    file_path = ""
+    attach_image_xpath = "/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[1]/div[2]/div/div"
+    attach_image = driver.find_element(By.XPATH, value = attach_image_xpath)
+    attach_image.click()
+
+    attachment_section = driver.find_element(By. XPATH, value = attach_image_xpath)
+    attachment_section.click()
+    image_box = driver.find_element(By.XPATH, value = '//input[@accept="image/*,video/mp4,video/3gpp,video/quicktime"]')
+    image_box.send_keys(file_path)
+
+
+#input directory for image in str
+#find element for attach button
+#click 
+#find element for search bar
+#click
+#send directory for image
+    return
+
+print("enter paragraph of message, press enter when you want to go to a next paragraph")
+para1 = "Hi. I would like to inquire you about your car insurance."
+# para1 = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."
+para2 = "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+para3 = "."
+para4 = "."
+para5 = "."
+para6 = "."
+para7 = "."
+para8 = "."
+para9 = "."
+para10 = "."
+
+messageArray = [para1,para2,para3,para4,para5,para6,para7,para8,para9,para10]
+
+
+
+def Messaging(runCount):
+
+    # if(runCount == 1):
+    #     print("enter paragraph of message, press enter when you want to go to a next paragraph")
+    #     para1 = "Hi. I would like to inquire you about your car insurance."
+    #     # para1 = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."
+    #     para2 = "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+    #     para3 = "."
+    #     para4 = "."
+    #     para5 = "."
+    #     para6 = "."
+    #     para7 = "."
+    #     para8 = "."
+    #     para9 = "."
+    #     para10 = "."
+
+    #     messageArray = [para1,para2,para3,para4,para5,para6,para7,para8,para9,para10]
+
+    paraCount = 1
+    messageCount = 0
+
+    # ARRAY COUNTS FROM 0
+    
+    while(1):
+        if(messageCount == 0):
+            inp_xpath = "/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[1]/p"
+            input_box = driver.find_element(By.XPATH, value = inp_xpath)
+            input_box.click()
+            message = messageArray[messageCount]            
+            input_box.send_keys(message + Keys.CONTROL + Keys.ENTER + Keys.ENTER)
+            messageCount = messageCount + 1
+            paraCount = paraCount + 2
+
+        if(messageCount >= 1 and messageCount <= 9):
+            strCount = str(paraCount)
+            inp_xpath = "/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div/p["+ strCount +"]"
+            # /html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div/p[2]
+            input_box = driver.find_element(By.XPATH, value = inp_xpath)
+            input_box.click()
+            message = messageArray[messageCount]
+            input_box.send_keys(message + Keys.CONTROL + Keys.ENTER + Keys.ENTER)
+            messageCount = messageCount + 1
+            paraCount = paraCount + 2
+            if(messageCount == 9):
+                input_box.send_keys(Keys.ENTER)
+                break
+
+
+    #default set to 10 paragraphs
+    #messages = [message1, message2, message3]
+    #message[count]
+    #throw that into send keys
+
+# def obtainParagraph():
+#     while(input() != "Done"):
+        
+
+#     return
+
+def whatsappURL():
+    wURL = "https://web.whatsapp.com/"
+    driver.get(wURL)
+
+# def init_webdriver(headless=False):
+#     if headless == True:    
+#         chrome_options = Options()
+#         chrome_options.add_argument("--headless")
+#         return webdriver.Chrome(options=chrome_options)
+#         #initialise webdriver with headless browser
+#     else:
+#         return webdriver.Chrome()
+#         #initialise webdriver normally, without headless browser
+
+# text = "Program Testing Message 2"
+
+driver = webdriver.Chrome()
+driver.get("https://web.whatsapp.com")
+print("Scan QR Code, And then Enter")
+input()
+print("Logged In")
+
+# inp_xpath_search = "/html/body/div[1]/div/div/div[3]/div/div[1]/div/div/div[2]/div/div[2]"
+# input_box_search = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH,inp_xpath_search))
+# input_box_search.click()
+# time.sleep(2)
+# input_box_search.send_keys(contact)
+# time.sleep(2)
+
+# selected_contact = driver.find_element(By.XPATH, value = "//span[@title='"+contact+"']")
+# selected_contact.click()
+
+# inp_xpath = "/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[1]/p"
+# input_box = driver.find_element(By.XPATH, value = inp_xpath)
+# time.sleep(2)
+# input_box.send_keys(text + Keys.ENTER)
+# time.sleep(2)
+# driver.quit()
+runCount = 1
+row = 2
+# message = obtainMessage()
+# message = "Hi"
+while(True):
+    
+    inp_xpath_search = "/html/body/div[1]/div/div/div[3]/div/div[1]/div/div/div[2]/div/div[2]"
+    input_box_search = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH,inp_xpath_search))
+    input_box_search.click()
+    time.sleep(1)
+    contact, maxRow = obtainContacts(row)
+    if(contact == " "):
+        break
+    input_box_search.send_keys(contact)
+    time.sleep(1)
+
+    selected_contact = driver.find_element(By.XPATH, value = "//span[@title='"+contact+"']")
+    selected_contact.click()
+    # inp_xpath = "/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[1]/p"
+    # input_box = driver.find_element(By.XPATH, value = inp_xpath)
+    time.sleep(1)
+
+    # attachImage()
+
+    # time.sleep(1)
+
+    Messaging(runCount)
+
+    # input_box.send_keys(message + Keys.CONTROL + Keys.ENTER + Keys.ENTER)
+    # input_box.send_keys(message + Keys.ENTER) 
+
+    time.sleep(1)
+
+    row = row + 1
+    runCount = runCount + 1
+
