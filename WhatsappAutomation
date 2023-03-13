@@ -8,15 +8,9 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support import expected_conditions as ec
 import openpyxl
 import time
+import sys 
 
-#structure is:
-#program will first prompt the user to a spreadsheet of target contacts
-#program will prompt the usr of the images and text that they want to send
-#program will generate an array of contacts based on the spreadsheet
-#program will access whatsapp and retrieve one contact name from the array
-#program will search the name in the search box and open a chat with the contact
-#program will attach the image and texts and click enter to send the message
-#program will take in the next contact
+print(sys.argv)
 
 def obtainContacts(row):
     activeBook = openpyxl.load_workbook("C:\\Users\\ASUS\\Dropbox\\My PC (LAPTOP-NBF5IENT)\\Downloads\\Contacts Testing.xlsx")
@@ -96,13 +90,37 @@ def documentAttach():
     attach_button.click()
     time.sleep(2)
 
-    document_button_xpath = '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[1]/div[2]/div/span/div/div/ul/li[4]/button'
-    document_button = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH, document_button_xpath)) 
-    document_button.click()
-    time.sleep(2)
+    # document_button_xpath = '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[1]/div[2]/div/span/div/div/ul/li[4]/button'
+    # document_button = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH, document_button_xpath)) 
+    # document_button.click()
+    # time.sleep(2)
+
+    # document_button_xpath = '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[1]/div[2]/div/span/div/div/ul/li[1]/button'
+    # document_button = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH, document_button_xpath)) 
+    # document_button.click()
+    # time.sleep(2)
+    
     #until here
-    file_search_box = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH, value = '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[1]/div[2]/div/span/div/div/ul/li[4]/button/input'))
-    driver.find_element(By.XPATH, value = "/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[1]/div[2]/div/span/div/div/ul/li[4]/button/input").send_keys("C:\\Users\ASUS\Dropbox\My PC (LAPTOP-NBF5IENT)\Downloads\6134346.png")
+    file_search_box_xpath = '//input[@accept="image/*,video/mp4,video/3gpp,video/quicktime"]'
+    file_search_box = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH, value = file_search_box_xpath))
+    # file_search_box.click()
+    time.sleep(2)
+    file_search_box.send_keys("C:\\Users\\ASUS\\Dropbox\\My PC (LAPTOP-NBF5IENT)\\Downloads\\6134346.png")
+    # time.sleep(3)
+    file_search_ui2_xpath = '//input[@accept="*"]'
+    file_search_ui2 = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH, value = file_search_ui2_xpath))
+    file_search_ui2.send_keys("C:\\Users\\ASUS\\Dropbox\\My PC (LAPTOP-NBF5IENT)\\Downloads\\capybara.jpeg")
+    send_button_xpath = '//*[@id="app"]/div/div/div[2]/div[2]/span/div/span/div/div/div[2]/div/div[2]/div[2]/div/div'
+    send_button = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH, value = send_button_xpath))
+    time.sleep(100)
+    send_button.click()
+
+
+    # file_search = driver.find_element(By.XPATH, value = '//input[@accept="image/*,video/mp4,video/3gpp,video/quicktime"]')
+    
+
+    # file_search.click()
+    # file_search.send_keys("C:\\Users\ASUS\Dropbox\My PC (LAPTOP-NBF5IENT)\Downloads\6134346.png")
     # file_search_box.send_keys("C:\\Users\ASUS\Dropbox\My PC (LAPTOP-NBF5IENT)\Downloads\6134346.png")
     
     # image_box = driver.find_element(By.XPATH, value = '//input[@accept="image/*,video/mp4,video/3gpp,video/quicktime"]')
@@ -125,35 +143,35 @@ def documentAttach():
 
 
 
-def Messaging():
-    paraCount = 1
-    messageCount = 0
-    while(1):
-        if(messageCount == 0):
-            inp_xpath = "/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[1]/p"
-            input_box = driver.find_element(By.XPATH, value = inp_xpath)
-            input_box.click()
-            message = messageArray[messageCount]            
-            input_box.send_keys(message + Keys.CONTROL + Keys.ENTER + Keys.ENTER)
-            messageCount = messageCount + 1
-            paraCount = paraCount + 2
+# def Messaging():
+#     paraCount = 1
+#     messageCount = 0
+#     while(1):
+#         if(messageCount == 0):
+#             inp_xpath = "/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[1]/p"
+#             input_box = driver.find_element(By.XPATH, value = inp_xpath)
+#             input_box.click()
+#             message = messageArray[messageCount]            
+#             input_box.send_keys(message + Keys.CONTROL + Keys.ENTER + Keys.ENTER)
+#             messageCount = messageCount + 1
+#             paraCount = paraCount + 2
 
-        if(messageCount >= 1 and messageCount <= 9):
-            strCount = str(paraCount)
-            inp_xpath = "/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div/p["+ strCount +"]"
-            # /html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div/p[2]
-            input_box = driver.find_element(By.XPATH, value = inp_xpath)
-            input_box.click()
-            message = messageArray[messageCount]
-            input_box.send_keys(message + Keys.CONTROL + Keys.ENTER + Keys.ENTER)
-            messageCount = messageCount + 1
-            paraCount = paraCount + 2
-            if(messageCount == 9):
-                time.sleep(3)
-                documentAttach()
-                time.sleep(1)
-                input_box.send_keys(Keys.ENTER)
-                break
+#         if(messageCount >= 1 and messageCount <= 9):
+#             strCount = str(paraCount)
+#             inp_xpath = "/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div/p["+ strCount +"]"
+#             # /html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div/p[2]
+#             input_box = driver.find_element(By.XPATH, value = inp_xpath)
+#             input_box.click()
+#             message = messageArray[messageCount]
+#             input_box.send_keys(message + Keys.CONTROL + Keys.ENTER + Keys.ENTER)
+#             messageCount = messageCount + 1
+#             paraCount = paraCount + 2
+#             if(messageCount == 9):
+#                 time.sleep(3)
+#                 documentAttach()
+#                 time.sleep(1)
+#                 input_box.send_keys(Keys.ENTER)
+#                 break
 
 
 #default set to 10 paragraphs
@@ -170,7 +188,7 @@ print("Logged In")
 runCount = 1
 row = 2
 
-messageArray = messagePrompt()
+# messageArray = messagePrompt()
 # documentArray = documentPrompt()
 
 while(True):
@@ -189,9 +207,9 @@ while(True):
     # inp_xpath = "/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[1]/p"
     # input_box = driver.find_element(By.XPATH, value = inp_xpath)
     time.sleep(1)
-    Messaging()
+    # Messaging()
     time.sleep(1)
-    # documentAttach()
+    documentAttach()
 
     row = row + 1
     runCount = runCount + 1
