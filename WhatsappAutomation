@@ -9,15 +9,6 @@ from selenium.webdriver.support import expected_conditions as ec
 import openpyxl
 import time
 
-#structure is:
-#program will first prompt the user to a spreadsheet of target contacts
-#program will prompt the usr of the images and text that they want to send
-#program will generate an array of contacts based on the spreadsheet
-#program will access whatsapp and retrieve one contact name from the array
-#program will search the name in the search box and open a chat with the contact
-#program will attach the image and texts and click enter to send the message
-#program will take in the next contact
-
 def obtainContacts(row):
     activeBook = openpyxl.load_workbook("C:\\Users\\ASUS\\Dropbox\\My PC (LAPTOP-NBF5IENT)\\Downloads\\Contacts Testing.xlsx")
     #directory path of excel sheet
@@ -34,18 +25,18 @@ def obtainContacts(row):
 #will return one contact name at a time to main()
 
 
-def attachImage():
+# def attachImage():
 
-    file_path = ""
-    attach_image_xpath = "/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[1]/div[2]/div/div"
-    attach_image = driver.find_element(By.XPATH, value = attach_image_xpath)
-    attach_image.click()
+#     file_path = "C:\\Users\ASUS\Dropbox\My PC (LAPTOP-NBF5IENT)\Downloads\6134346.png"
+#     attach_image_xpath = "/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[1]/div[2]/div/div"
+#     attach_image = driver.find_element(By.XPATH, value = attach_image_xpath)
+#     attach_image.click()
 
-    attachment_section = driver.find_element(By. XPATH, value = attach_image_xpath)
-    attachment_section.click()
-    image_box = driver.find_element(By.XPATH, value = '//input[@accept="image/*,video/mp4,video/3gpp,video/quicktime"]')
-    image_box.send_keys(file_path)
-
+#     attachment_section = driver.find_element(By. XPATH, value = attach_image_xpath)
+#     attachment_section.click()
+#     image_box = driver.find_element(By.XPATH, value = '//input[@accept="image/*,video/mp4,video/3gpp,video/quicktime"]')
+#     image_box.send_keys(file_path)
+#     return
 
 #input directory for image in str
 #find element for attach button
@@ -53,129 +44,152 @@ def attachImage():
 #find element for search bar
 #click
 #send directory for image
-    return
 
-print("enter paragraph of message, press enter when you want to go to a next paragraph")
-para1 = "Hi. I would like to inquire you about your car insurance."
-# para1 = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."
-para2 = "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-para3 = "."
-para4 = "."
-para5 = "."
-para6 = "."
-para7 = "."
-para8 = "."
-para9 = "."
-para10 = "."
-
-messageArray = [para1,para2,para3,para4,para5,para6,para7,para8,para9,para10]
+#prompt for options
+#options 
+#1. messages for mass message
+#2. prompt whether files need to be included (up to 5 files)
+#3. prompt for file paths
 
 
+def messagePrompt():
+    print("Enter Messages (up to 10 paragraphs)")
+    para1 = input()
+    para2 = input()
+    para3 = input()
+    para4 = input()
+    para5 = input()
+    para6 = input()
+    para7 = input()
+    para8 = input()
+    para9 = input()
+    para10 = input()
+    messageArray = [para1,para2,para3,para4,para5,para6,para7,para8,para9,para10]
+    return messageArray
 
-def Messaging(runCount):
+# def documentPrompt():
+#     print("Attach documents? (up to 5 documents)")
+#     print("Please enter the document file paths")
+#     documentPath1 = input()
+#     documentPath2 = input()
+#     documentPath3 = input()
+#     documentPath4 = input()
+#     documentPath5 = input()
+#     documentArray = [documentPath1,documentPath2,documentPath3,documentPath4,documentPath5]
 
-    # if(runCount == 1):
-    #     print("enter paragraph of message, press enter when you want to go to a next paragraph")
-    #     para1 = "Hi. I would like to inquire you about your car insurance."
-    #     # para1 = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged."
-    #     para2 = "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-    #     para3 = "."
-    #     para4 = "."
-    #     para5 = "."
-    #     para6 = "."
-    #     para7 = "."
-    #     para8 = "."
-    #     para9 = "."
-    #     para10 = "."
+    # return documentArray
+ 
 
-    #     messageArray = [para1,para2,para3,para4,para5,para6,para7,para8,para9,para10]
+def documentAttach():
+    # documentArray.__len__
+    attach_button_xpath = '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[1]/div[2]/div/div'
+    attach_button = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH, attach_button_xpath))
+    attach_button.click()
+    time.sleep(2)
 
-    paraCount = 1
-    messageCount = 0
+    # document_button_xpath = '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[1]/div[2]/div/span/div/div/ul/li[4]/button'
+    # document_button = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH, document_button_xpath)) 
+    # document_button.click()
+    # time.sleep(2)
 
-    # ARRAY COUNTS FROM 0
+    # document_button_xpath = '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[1]/div[2]/div/span/div/div/ul/li[1]/button'
+    # document_button = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH, document_button_xpath)) 
+    # document_button.click()
+    # time.sleep(2)
     
-    while(1):
-        if(messageCount == 0):
-            inp_xpath = "/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[1]/p"
-            input_box = driver.find_element(By.XPATH, value = inp_xpath)
-            input_box.click()
-            message = messageArray[messageCount]            
-            input_box.send_keys(message + Keys.CONTROL + Keys.ENTER + Keys.ENTER)
-            messageCount = messageCount + 1
-            paraCount = paraCount + 2
-
-        if(messageCount >= 1 and messageCount <= 9):
-            strCount = str(paraCount)
-            inp_xpath = "/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div/p["+ strCount +"]"
-            # /html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div/p[2]
-            input_box = driver.find_element(By.XPATH, value = inp_xpath)
-            input_box.click()
-            message = messageArray[messageCount]
-            input_box.send_keys(message + Keys.CONTROL + Keys.ENTER + Keys.ENTER)
-            messageCount = messageCount + 1
-            paraCount = paraCount + 2
-            if(messageCount == 9):
-                input_box.send_keys(Keys.ENTER)
-                break
+    #until here
+    file_search_box_xpath = '//input[@accept="image/*,video/mp4,video/3gpp,video/quicktime"]'
+    file_search_box = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH, value = file_search_box_xpath))
+    # file_search_box.click()
+    time.sleep(2)
+    file_search_box.send_keys("C:\\Users\\ASUS\\Dropbox\\My PC (LAPTOP-NBF5IENT)\\Downloads\\6134346.png")
+    # time.sleep(3)
+    file_search_ui2_xpath = '//input[@accept="*"]'
+    file_search_ui2 = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH, value = file_search_ui2_xpath))
+    file_search_ui2.send_keys("C:\\Users\\ASUS\\Dropbox\\My PC (LAPTOP-NBF5IENT)\\Downloads\\capybara.jpeg")
+    send_button_xpath = '//*[@id="app"]/div/div/div[2]/div[2]/span/div/span/div/div/div[2]/div/div[2]/div[2]/div/div'
+    send_button = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH, value = send_button_xpath))
+    time.sleep(100)
+    send_button.click()
 
 
-    #default set to 10 paragraphs
-    #messages = [message1, message2, message3]
-    #message[count]
-    #throw that into send keys
+    # file_search = driver.find_element(By.XPATH, value = '//input[@accept="image/*,video/mp4,video/3gpp,video/quicktime"]')
+    
 
-# def obtainParagraph():
-#     while(input() != "Done"):
-        
+    # file_search.click()
+    # file_search.send_keys("C:\\Users\ASUS\Dropbox\My PC (LAPTOP-NBF5IENT)\Downloads\6134346.png")
+    # file_search_box.send_keys("C:\\Users\ASUS\Dropbox\My PC (LAPTOP-NBF5IENT)\Downloads\6134346.png")
+    
+    # image_box = driver.find_element(By.XPATH, value = '//input[@accept="image/*,video/mp4,video/3gpp,video/quicktime"]')
+    # image_box.send_keys("C:\\Users\ASUS\Dropbox\My PC (LAPTOP-NBF5IENT)\Downloads\6134346.png")
+    # file_search_box = driver.find_element(By.XPATH, value = '//input[@accept="image/*,video/mp4,video/3gpp,video/quicktime"]')
+    # file_search_box.send_keys(documentArray[0])
+    # file_search_box.send_keys(Keys.ENTER)
 
-#     return
+    # for x in range(1,4):
+    #     secondUI_attach_document_button = '//*[@id="app"]/div/div/div[2]/div[2]/span/div/span/div/div/div[2]/div/div[2]/div[1]/button'
+    #     secondUI_attach_document = driver.find_element(By.XPATH, value = secondUI_attach_document_button)
+    #     secondUI_attach_document.click()
 
-def whatsappURL():
-    wURL = "https://web.whatsapp.com/"
-    driver.get(wURL)
+    #     file_search_box = driver.find_element(By.XPATH, value = '//input[@accept="image/*,video/mp4,video/3gpp,video/quicktime"]')
+    #     file_search_box.send_keys(documentArray[x])
+    #     file_search_box.send_keys(Keys.ENTER)
 
-# def init_webdriver(headless=False):
-#     if headless == True:    
-#         chrome_options = Options()
-#         chrome_options.add_argument("--headless")
-#         return webdriver.Chrome(options=chrome_options)
-#         #initialise webdriver with headless browser
-#     else:
-#         return webdriver.Chrome()
-#         #initialise webdriver normally, without headless browser
 
-# text = "Program Testing Message 2"
+        #//*[@id="app"]/div/div/div[2]/div[2]/span/div/span/div/div/div[2]/div/div[2]/div[1]/button
+
+
+
+# def Messaging():
+#     paraCount = 1
+#     messageCount = 0
+#     while(1):
+#         if(messageCount == 0):
+#             inp_xpath = "/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[1]/p"
+#             input_box = driver.find_element(By.XPATH, value = inp_xpath)
+#             input_box.click()
+#             message = messageArray[messageCount]            
+#             input_box.send_keys(message + Keys.CONTROL + Keys.ENTER + Keys.ENTER)
+#             messageCount = messageCount + 1
+#             paraCount = paraCount + 2
+
+#         if(messageCount >= 1 and messageCount <= 9):
+#             strCount = str(paraCount)
+#             inp_xpath = "/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div/p["+ strCount +"]"
+#             # /html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div/p[2]
+#             input_box = driver.find_element(By.XPATH, value = inp_xpath)
+#             input_box.click()
+#             message = messageArray[messageCount]
+#             input_box.send_keys(message + Keys.CONTROL + Keys.ENTER + Keys.ENTER)
+#             messageCount = messageCount + 1
+#             paraCount = paraCount + 2
+#             if(messageCount == 9):
+#                 time.sleep(3)
+#                 documentAttach()
+#                 time.sleep(1)
+#                 input_box.send_keys(Keys.ENTER)
+#                 break
+
+
+#default set to 10 paragraphs
+#messages = [message1, message2, message3]
+#message[count]
+#throw that into send keys
 
 driver = webdriver.Chrome()
 driver.get("https://web.whatsapp.com")
 print("Scan QR Code, And then Enter")
-input()
+input() #wait for log in
 print("Logged In")
 
-# inp_xpath_search = "/html/body/div[1]/div/div/div[3]/div/div[1]/div/div/div[2]/div/div[2]"
-# input_box_search = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH,inp_xpath_search))
-# input_box_search.click()
-# time.sleep(2)
-# input_box_search.send_keys(contact)
-# time.sleep(2)
-
-# selected_contact = driver.find_element(By.XPATH, value = "//span[@title='"+contact+"']")
-# selected_contact.click()
-
-# inp_xpath = "/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[1]/p"
-# input_box = driver.find_element(By.XPATH, value = inp_xpath)
-# time.sleep(2)
-# input_box.send_keys(text + Keys.ENTER)
-# time.sleep(2)
-# driver.quit()
 runCount = 1
 row = 2
-# message = obtainMessage()
-# message = "Hi"
+
+# messageArray = messagePrompt()
+# documentArray = documentPrompt()
+
 while(True):
-    
-    inp_xpath_search = "/html/body/div[1]/div/div/div[3]/div/div[1]/div/div/div[2]/div/div[2]"
+    inp_xpath_search = '//*[@id="side"]/div[1]/div/div/div[2]/div/div[1]'
     input_box_search = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH,inp_xpath_search))
     input_box_search.click()
     time.sleep(1)
@@ -190,17 +204,9 @@ while(True):
     # inp_xpath = "/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[1]/p"
     # input_box = driver.find_element(By.XPATH, value = inp_xpath)
     time.sleep(1)
-
-    # attachImage()
-
-    # time.sleep(1)
-
-    Messaging(runCount)
-
-    # input_box.send_keys(message + Keys.CONTROL + Keys.ENTER + Keys.ENTER)
-    # input_box.send_keys(message + Keys.ENTER) 
-
+    # Messaging()
     time.sleep(1)
+    documentAttach()
 
     row = row + 1
     runCount = runCount + 1
