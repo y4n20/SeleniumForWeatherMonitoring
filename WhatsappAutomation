@@ -67,17 +67,57 @@ def messagePrompt():
     messageArray = [para1,para2,para3,para4,para5,para6,para7,para8,para9,para10]
     return messageArray
 
-# def documentPrompt():
-#     print("Attach documents? (up to 5 documents)")
-#     print("Please enter the document file paths")
-#     documentPath1 = input()
-#     documentPath2 = input()
-#     documentPath3 = input()
-#     documentPath4 = input()
-#     documentPath5 = input()
-#     documentArray = [documentPath1,documentPath2,documentPath3,documentPath4,documentPath5]
+def messagePrompt():
+    para1 = ""
+    para2 = ""
+    para3 = ""
+    para4 = ""
+    para5 = ""
+    para6 = ""
+    para7 = ""
+    para8 = ""
+    para9 = ""
+    para10 = ""
+    messageArray = [para1,para2,para3,para4,para5,para6,para7,para8,para9,para10]
+    print("Please enter the paragraphs for the message")
+    for k in range (9,-1,-1):
+        messageArray[k] = input()
+        print(str(k) + " paragraphs left")
+    print("Message has been entered")
+    # print(documentArray)
+    return messageArray
 
-    # return documentArray
+def documentPrompt():
+    filePath1 = ""
+    filePath2 = ""
+    filePath3 = ""
+    filePath4 = ""
+    filePath5 = ""
+    documentArray = [filePath1, filePath2, filePath3, filePath4, filePath5]
+    print("Please enter file paths for documents to be attached")
+    for k in range (4,-1,-1):
+        documentArray[k] = input()
+        print(str(k) + " files left")
+    print("Files have been entered")
+    # print(documentArray)
+    return documentArray
+
+
+    # print("Attach documents? (up to 5 files)")
+    # print("Please enter the file paths")
+    # documentPath1 = input()
+    # print("4 files left")
+    # documentPath2 = input()
+    # print("3 files left")
+    # documentPath3 = input()
+    # print("2 files left")
+    # documentPath4 = input()
+    # print("1 files left")
+    # documentPath5 = input()
+    # print("files have been entered")
+    # documentArray = [documentPath1,documentPath2,documentPath3,documentPath4,documentPath5]
+
+    return documentArray
  
 
 def documentAttach():
@@ -85,31 +125,40 @@ def documentAttach():
     attach_button_xpath = '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[1]/div[2]/div/div'
     attach_button = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH, attach_button_xpath))
     attach_button.click()
-    time.sleep(2)
-
-    # document_button_xpath = '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[1]/div[2]/div/span/div/div/ul/li[4]/button'
-    # document_button = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH, document_button_xpath)) 
-    # document_button.click()
-    # time.sleep(2)
-
-    # document_button_xpath = '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[1]/div[2]/div/span/div/div/ul/li[1]/button'
-    # document_button = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH, document_button_xpath)) 
-    # document_button.click()
-    # time.sleep(2)
+    #open attachment menu
+    # time.sleep(1)
     
-    #until here
-    file_search_box_xpath = '//input[@accept="image/*,video/mp4,video/3gpp,video/quicktime"]'
+    #for 5 times or number of file paths entered
+    #loop and send keys into @accept="*"
+    #use try blocks
+    #or use if logic to detect if should skip
+    
+    file_search_input_xpath = '//input[@accept="*"]'
+    for x in (0,4):
+        file_search_input = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH, value = file_search_input_xpath))
+           
+        try:
+            file_search_input.send_keys()
+            #document array here
+
+        except:
+            print("file path non existent or invalid")
+        else:
+            print("file has been attached")
+
+
     file_search_box = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH, value = file_search_box_xpath))
-    # file_search_box.click()
     time.sleep(2)
+
     file_search_box.send_keys("C:\\Users\\ASUS\\Dropbox\\My PC (LAPTOP-NBF5IENT)\\Downloads\\6134346.png")
-    # time.sleep(3)
     file_search_ui2_xpath = '//input[@accept="*"]'
     file_search_ui2 = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH, value = file_search_ui2_xpath))
-    file_search_ui2.send_keys("C:\\Users\\ASUS\\Dropbox\\My PC (LAPTOP-NBF5IENT)\\Downloads\\capybara.jpeg")
+    file_search_ui2.send_keys("")
+
+
     send_button_xpath = '//*[@id="app"]/div/div/div[2]/div[2]/span/div/span/div/div/div[2]/div/div[2]/div[2]/div/div'
     send_button = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH, value = send_button_xpath))
-    time.sleep(100)
+    time.sleep(2)
     send_button.click()
 
 
@@ -140,35 +189,35 @@ def documentAttach():
 
 
 
-# def Messaging():
-#     paraCount = 1
-#     messageCount = 0
-#     while(1):
-#         if(messageCount == 0):
-#             inp_xpath = "/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[1]/p"
-#             input_box = driver.find_element(By.XPATH, value = inp_xpath)
-#             input_box.click()
-#             message = messageArray[messageCount]            
-#             input_box.send_keys(message + Keys.CONTROL + Keys.ENTER + Keys.ENTER)
-#             messageCount = messageCount + 1
-#             paraCount = paraCount + 2
+def Messaging():
+    paraCount = 1
+    messageCount = 0
+    while(1):
+        if(messageCount == 0):
+            inp_xpath = "/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[1]/p"
+            input_box = driver.find_element(By.XPATH, value = inp_xpath)
+            input_box.click()
+            message = messageArray[messageCount]            
+            input_box.send_keys(message + Keys.CONTROL + Keys.ENTER + Keys.ENTER)
+            messageCount = messageCount + 1
+            paraCount = paraCount + 2
 
-#         if(messageCount >= 1 and messageCount <= 9):
-#             strCount = str(paraCount)
-#             inp_xpath = "/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div/p["+ strCount +"]"
-#             # /html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div/p[2]
-#             input_box = driver.find_element(By.XPATH, value = inp_xpath)
-#             input_box.click()
-#             message = messageArray[messageCount]
-#             input_box.send_keys(message + Keys.CONTROL + Keys.ENTER + Keys.ENTER)
-#             messageCount = messageCount + 1
-#             paraCount = paraCount + 2
-#             if(messageCount == 9):
-#                 time.sleep(3)
-#                 documentAttach()
-#                 time.sleep(1)
-#                 input_box.send_keys(Keys.ENTER)
-#                 break
+        if(messageCount >= 1 and messageCount <= 9):
+            strCount = str(paraCount)
+            inp_xpath = "/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div/p["+ strCount +"]"
+            # /html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div/p[2]
+            input_box = driver.find_element(By.XPATH, value = inp_xpath)
+            input_box.click()
+            message = messageArray[messageCount]
+            input_box.send_keys(message + Keys.CONTROL + Keys.ENTER + Keys.ENTER)
+            messageCount = messageCount + 1
+            paraCount = paraCount + 2
+            if(messageCount == 9):
+                time.sleep(3)
+                documentAttach()
+                time.sleep(1)
+                input_box.send_keys(Keys.ENTER)
+                break
 
 
 #default set to 10 paragraphs
@@ -179,14 +228,14 @@ def documentAttach():
 driver = webdriver.Chrome()
 driver.get("https://web.whatsapp.com")
 print("Scan QR Code, And then Enter")
-input() #wait for log in
+# input() #wait for log in
 print("Logged In")
 
 runCount = 1
 row = 2
 
-# messageArray = messagePrompt()
-# documentArray = documentPrompt()
+messageArray = messagePrompt()
+documentArray = documentPrompt()
 
 while(True):
     inp_xpath_search = '//*[@id="side"]/div[1]/div/div/div[2]/div/div[1]'
