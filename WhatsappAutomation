@@ -10,24 +10,18 @@ import openpyxl
 import time
 
 def obtainContacts(row):
-    activeBook = openpyxl.load_workbook("C:\\Users\\ASUS\\Dropbox\\My PC (LAPTOP-NBF5IENT)\\Downloads\\Contacts Testing.xlsx")
+    activeBook = openpyxl.load_workbook("C:\\Users\\ASUS\\Dropbox\\My PC (LAPTOP-NBF5IENT)\\Downloads\\TONG MING XI Contacts excluding teachers.xlsx")
+    # activeBook = openpyxl.load_workbook("C:\\Users\\ASUS\\Dropbox\\My PC (LAPTOP-NBF5IENT)\\Downloads\\Contacts Testing.xlsx")
     #directory path of excel sheet
     activeSheet = activeBook.active
     #identify active worksheet
     maxRowCount = activeSheet.max_row + 1
+    activeCell = activeSheet.cell(row, column = 3)
+    contact_number = activeCell.value
     activeCell = activeSheet.cell(row, column = 1)
     contact_name = activeCell.value
 
-    #for tmx actual //
-    # activeCell = activeSheet.cell(row, column = 2)
-    # contact_category = activeCell.value
-    # contact_name_and_category = str(contact_name) + " " + str(contact_category)
-    # print (contact_name_and_category)
-    #retrieve contact name from cell
-    # return contact_name_and_category, maxRowCount
-    #//
-
-    return contact_name, maxRowCount
+    return contact_number, contact_name, maxRowCount
 
 def messagePrompt():
     para1 = ""
@@ -47,33 +41,51 @@ def messagePrompt():
         print(str(9-k) + " paragraphs left")
     print("Message has been entered")
     print(messageArray)
-    return messageArray
+
+    print("Would you like the message to be separated from the file?")
+    separateMessagePrompt = input()
+
+    return messageArray, separateMessagePrompt
 
 def documentPrompt():
     filePath1 = ""
     filePath2 = ""
     filePath3 = ""
-    filePath4 = ""
-    filePath5 = ""
-    documentArray = [filePath1, filePath2, filePath3, filePath4, filePath5]
+    # filePath4 = ""
+    # filePath5 = ""
+    # documentArray = [filePath1, filePath2, filePath3, filePath4, filePath5]
+    documentArray = [filePath1, filePath2, filePath3]
     print("Please enter file paths for documents to be attached")
-    for k in range (0,5,+1):
+    for k in range (0,3,+1):
         documentArray[k] = input()
-        print(str(4-k) + " files left")
+        print(str(2-k) + " files left")
     print("Files have been entered")
     print(documentArray)
-    return documentArray
+    number_of_files = len(documentArray)
+    print(number_of_files)
+    return documentArray,number_of_files
 
 def documentAttach():
-    #open attachment menu
+    # #open attachment menu
+    # attach_button_xpath = '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[1]/div[2]/div/div'
+    # file_search_input_xpath = '//input[@accept="image/*,video/mp4,video/3gpp,video/quicktime"]'
+    # # for x in range(0,5,+1):
+    # attach_button = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH, attach_button_xpath))
+    # time.sleep(0.5)
+    # attach_button.click()
+    # file_search_input = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH, value = file_search_input_xpath))
+    # time.sleep(0.5)
+
     attach_button_xpath = '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[1]/div[2]/div/div'
     file_search_input_xpath = '//input[@accept="image/*,video/mp4,video/3gpp,video/quicktime"]'
-    for x in range(0,5,+1):
+    
+    for x in range(0,number_of_files,+1):
+        #5 fles still
         attach_button = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH, attach_button_xpath))
         time.sleep(0.5)
         attach_button.click()
         file_search_input = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH, value = file_search_input_xpath))
-        time.sleep(0.5)
+        # time.sleep(0.5)
         try:
             file_search_input.send_keys(documentArray[x])
         except:
@@ -84,18 +96,36 @@ def documentAttach():
             #close attachment menu
         else:
             print("file" + str(x+1) +" has been attached")
-            send_button_xpath = '//*[@id="app"]/div/div/div[2]/div[2]/span/div/span/div/div/div[2]/div/div[2]/div[2]/div/div/span'
+            # time.sleep(0.5)
+            send_button_xpath = '//*[@id="app"]/div/div/div[3]/div[2]/span/div/span/div/div/div[2]/div/div[2]/div[2]/div/div'
             send_button = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH, value = send_button_xpath))
             time.sleep(0.5)
             send_button.click()
 
-def Messaging():
+    # try:
+    #     file_search_input.send_keys(documentArray[0] + " " + documentArray[1] + " " + documentArray[2] + " " + documentArray[3] + " " + documentArray[4])
+    # except:
+    #     print("A file path is non existent or invalid")
+    #     attach_button = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH, attach_button_xpath))
+    #     time.sleep(0.5)
+    #     attach_button.click()
+    #     #close attachment menu
+    # else:
+    #     print("files have been attached")
+    #     send_button_xpath = '//*[@id="app"]/div/div/div[2]/div[2]/span/div/span/div/div/div[2]/div/div[2]/div[2]/div/div/span'
+    #     send_button = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH, value = send_button_xpath))
+    #     time.sleep(0.5)
+    #     send_button.click()
+
+def Messaging(separateMessageChoice):
     paraCount = 1
     messageCount = 0
     while(1):
         if(messageCount == 0):
-            inp_xpath = "/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[1]/p"
-            input_box = driver.find_element(By.XPATH, value = inp_xpath)
+            inp_xpath = '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div[1]/p'
+            # input_box = driver.find_element(By.XPATH, value = inp_xpath)
+            
+            input_box = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH,inp_xpath))
             input_box.click()
             message = messageArray[messageCount]            
             input_box.send_keys(message + Keys.CONTROL + Keys.ENTER + Keys.ENTER)
@@ -105,7 +135,9 @@ def Messaging():
         if(messageCount >= 1 and messageCount <= 9):
             strCount = str(paraCount)
             inp_xpath = "/html/body/div[1]/div/div/div[4]/div/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div/p["+ strCount +"]"
-            input_box = driver.find_element(By.XPATH, value = inp_xpath)
+            inp_xpath = '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]/div[1]/div/div/p[' + strCount + "]"
+            
+            input_box = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH,inp_xpath))
             input_box.click()
             message = messageArray[messageCount]
             input_box.send_keys(message + Keys.CONTROL + Keys.ENTER + Keys.ENTER)
@@ -113,7 +145,18 @@ def Messaging():
             paraCount = paraCount + 2
             if(messageCount == 9):
                 time.sleep(0.5)
-                documentAttach()
+
+                if (separateMessageChoice == "Yes"):
+                    sendButtonXPATH = '//*[@id="main"]/footer/div[1]/div/span[2]/div/div[2]/div[2]/button'
+                    # sendButton = driver.find_element(By.XPATH, value = sendButtonXPATH)
+                    
+                    sendButton = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH, sendButtonXPATH))
+
+                    sendButton.click()
+                    documentAttach()
+                else:
+                    documentAttach()
+
                 time.sleep(0.5)
                 break
 
@@ -121,28 +164,104 @@ driver = webdriver.Chrome()
 driver.get("https://web.whatsapp.com")
 print("Scan QR Code to log in")
 
-runCount = 1
-row = 2
+# runCount = 1
+# row = 2
 
-messageArray = messagePrompt()
-documentArray = documentPrompt()
+messageArray, separateMessageChoice = messagePrompt()
+documentArray, number_of_files = documentPrompt()
 
-while(True):
-    inp_xpath_search = '//*[@id="side"]/div[1]/div/div/div[2]/div/div[1]'
-    input_box_search = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH,inp_xpath_search))
-    time.sleep(0.5)
-    input_box_search.click()
-    contact, maxRow = obtainContacts(row)
-    if(contact == " "):
-        break
-    input_box_search.send_keys(contact)
-    time.sleep(1)
-    selected_contact = driver.find_element(By.XPATH, value = "//span[@title='"+contact+"']")
-    selected_contact.click()
-    time.sleep(0.5)
-    Messaging()
-    time.sleep(0.5)
 
-    row = row + 1
-    runCount = runCount + 1
+contact_number, contact_name, maxRow = obtainContacts(row = 18)
+# contact_number, contact_name, maxRow = obtainContacts(row = 2)
 
+def mainProgram(testing = False, maxRow = maxRow):
+    runCount = 1
+    row = 18
+    # row = 2
+    if(testing == False):
+        time.sleep(5)
+        while(True):
+            inp_xpath_search = '//*[@id="side"]/div[1]/div/div/div[2]/div/div[1]'
+            input_box_search = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH,inp_xpath_search))
+            time.sleep(0.5)
+            input_box_search.click()
+            input_box_search.send_keys(Keys.CONTROL + Keys.BACK_SPACE)
+            contact_number, contact_name, maxRow = obtainContacts(row)
+
+            try:
+                input_box_search.send_keys(contact_number)
+            except: 
+                print("Contact number cannot be input")
+                
+            else:
+                time.sleep(0.5)
+                try:
+                    selected_contact = driver.find_element(By.XPATH, value = "//span[@title='"+contact_name+"']")
+                    time.sleep(0.5)
+                    selected_contact.click()
+                    # time.sleep(0.5)
+                    # Messaging(separateMessageChoice)
+                    # time.sleep(0.5)
+                except:
+                    print("Contact does not have whatsapp")
+                else:
+                    time.sleep(0.5)
+                    Messaging(separateMessageChoice)
+                    time.sleep(0.5)
+            finally:
+                    
+                print("Contact row sent: " + str(row))
+                row = row + 1
+                runCount = runCount + 1
+            
+            # driver.get("https://web.whatsapp.com")
+
+        driver.close()
+
+    else:
+        correctContacts = 0
+        wrongContacts = 0
+        notFoundContacts = 0
+        time.sleep(5)
+        while(runCount<maxRow+1):
+            inp_xpath_search = '//*[@id="side"]/div[1]/div/div/div[2]/div/div[1]'
+            input_box_search = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH,inp_xpath_search))
+            
+            input_box_search.click()
+            
+            contact_number, contact_name, maxRow = obtainContacts(row)
+            try:
+                input_box_search.send_keys(contact_number)
+            except:
+                break
+            else:
+                time.sleep(0.2)
+                try:
+                    # selected_contact = driver.find_element(By.XPATH, value = "//span[@title='"+contact_name+"']") 
+                    selected_contact = WebDriverWait(driver,50).until(lambda driver: driver.find_element(By.XPATH,"//span[@title='"+contact_name+"']"))
+                    time.sleep(0.5)
+                    selected_contact.click()
+                
+                except:
+                    print("contact not found: "+ str(contact_name))
+                    notFoundContacts = notFoundContacts + 1
+
+                else:
+                    # selected_contact.click()
+                    nameOfSearchedContact = selected_contact.text
+                    # print(nameOfSearchedContact)  
+                    if(nameOfSearchedContact == contact_name):
+                        print("contact matches: " + str(contact_name))
+                        correctContacts = correctContacts + 1
+                    else:
+                        print("contact does not match: " + str(contact_name))
+                        wrongContacts = wrongContacts + 1
+                finally:
+                    input_box_search.send_keys(Keys.CONTROL + Keys.BACK_SPACE)
+                    row = row + 1
+                    runCount = runCount + 1
+
+        print(str(correctContacts) + "," + str(wrongContacts) + "," + str(notFoundContacts))
+        driver.close()
+
+mainProgram(False, maxRow)
